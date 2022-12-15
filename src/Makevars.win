@@ -1,13 +1,13 @@
 TARGET = $(subst 64,x86_64,$(subst 32,i686,$(WIN)))-pc-windows-gnu
 
 # This is provided in Makevars.ucrt for R >= 4.2
-TOOLCHAIN ?= stable-msvc
+# TOOLCHAIN ?= stable-msvc
 
 TARGET_DIR = ./rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/release
 STATLIB = $(LIBDIR)/libvibrrt.a
 PKG_LIBS = -L$(LIBDIR) -lvibrrt -lws2_32 -ladvapi32 -luserenv -lbcrypt
-# For CoTaskMemFree
+# For reference to 'CoTaskMemFree' from ole32
 PKG_LIBS += -lole32
 
 all: C_clean
@@ -27,7 +27,7 @@ $(STATLIB):
 	# CARGO_LINKER is provided in Makevars.ucrt for R >= 4.2
 	export CARGO_TARGET_X86_64_PC_WINDOWS_GNU_LINKER="$(CARGO_LINKER)" && \
 		export LIBRARY_PATH="$${LIBRARY_PATH};$(CURDIR)/$(TARGET_DIR)/libgcc_mock" && \
-		cargo +$(TOOLCHAIN) build --target=$(TARGET) --lib --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR)
+		cargo build --target=$(TARGET) --lib --release --manifest-path=./rust/Cargo.toml --target-dir $(TARGET_DIR)
 
 C_clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS)
