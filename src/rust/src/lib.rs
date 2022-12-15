@@ -15,6 +15,7 @@ fn vbrt(sentence: Vec<String>, dict: String) -> Robj {
 
     let capacity = sentence.len();
     let mut ids: Vec<u32> = Vec::with_capacity(capacity);
+    let mut tids: Vec<u32> = Vec::with_capacity(capacity);
     let mut tokens: Vec<String> = Vec::with_capacity(capacity);
     let mut features: Vec<String> = Vec::with_capacity(capacity);
     let mut wcosts: Vec<i16> = Vec::with_capacity(capacity);
@@ -26,6 +27,7 @@ fn vbrt(sentence: Vec<String>, dict: String) -> Robj {
         for j in 0..worker.num_tokens() {
              let t = worker.token(j);
              ids.push(i as _);
+             tids.push(j as _);
              wcosts.push(t.word_cost().clone());
              tcosts.push(t.total_cost().clone());
              tokens.push(t.surface().to_string());
@@ -34,6 +36,7 @@ fn vbrt(sentence: Vec<String>, dict: String) -> Robj {
     }
     return data_frame!(
       sentence_id = r!(ids),
+      token_id = r!(tids),
       word_cost = r!(wcosts),
       total_cost = r!(tcosts),
       token = r!(tokens),
