@@ -17,3 +17,13 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 <!-- badges: end -->
+
+```{r}
+pkgload::load_all()
+
+audubon::polano[5:8] |>
+  tokenize_vec() |>
+  prettify(col_select = c("POS1", "POS2")) |>
+  dplyr::slice_head(n = 10) |>
+  dplyr::glimpse()
+```

@@ -1,20 +1,13 @@
 #' Tokenize sentence for character vector
 #'
 #' @param sentence Character vector to be tokenized.
-#' @param sys_dic Character scalar; path to the system dictionary for mecab.
-#' Note that the system dictionary is expected to be compiled with UTF-8,
-#' not Shift-JIS or other encodings.
-#' @param user_dic Character scalar; path to the user dictionary for mecab.
+#' @param sys_dic Character scalar; path to the system dictionary for 'vibrato'.
+#' @param user_dic Character scalar; path to the user dictionary for 'vibrato'.
 #' @param split Logical. If supplied `TRUE`, the function internally splits the sentence
 #' into sub-sentences using \code{stringi::stri_split_boudaries(type = "sentence")}.
 #' @param mode Character scalar to switch output format.
 #' @return data.frame or named list.
 #' @export
-#' @examples
-#' \dontrun{
-#' df <- tokenize_vec("\u3053\u3093\u306b\u3061\u306f")
-#' head(df)
-#' }
 tokenize_vec <- function(sentence,
                          sys_dic = system.file("dict/ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
                          user_dic = "",
@@ -52,16 +45,6 @@ tokenize_vec <- function(sentence,
 #' @inheritParams tokenize_vec
 #' @return data.frame.
 #' @export
-#' @examples
-#' \dontrun{
-#' df <- tokenize(
-#'   data.frame(
-#'     doc_id = seq_along(audubon::polano[5:8]),
-#'     text = audubon::polano[5:8]
-#'   )
-#' )
-#' head(df)
-#' }
 tokenize <- function(tbl,
                      text_field = "text",
                      docid_field = "doc_id",
@@ -97,8 +80,6 @@ tokenize <- function(tbl,
 }
 
 #' @noRd
-#' @import rlang
-#' @importFrom dplyr %>%
 tagger_impl <- function(sentence, sys_dic, split) {
   if (isTRUE(split)) {
     res <-
@@ -109,12 +90,18 @@ tagger_impl <- function(sentence, sys_dic, split) {
           data.frame(doc_id = doc_id),
           vbrt(vec, dict = sys_dic)
         ) %>%
-          dplyr::mutate(sentence_id = .data$sentence_id + 1)
+          dplyr::mutate(
+            sentence_id = .data$sentence_id + 1,
+            token_id = .data$token_id + 1
+          )
       })
   } else {
     res <-
       vbrt(sentence, dict = sys_dic) %>%
-      dplyr::mutate(sentence_id = .data$sentence_id + 1) %>%
+      dplyr::mutate(
+        sentence_id = .data$sentence_id + 1,
+        token_id = .data$token_id + 1
+      ) %>%
       dplyr::left_join(
         data.frame(
           sentence_id = seq_along(sentence),

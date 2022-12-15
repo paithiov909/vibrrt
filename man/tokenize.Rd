@@ -8,7 +8,7 @@ tokenize(
   tbl,
   text_field = "text",
   docid_field = "doc_id",
-  sys_dic = system.file("ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
+  sys_dic = system.file("dict/ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
   split = FALSE
 )
 }
@@ -19,9 +19,7 @@ tokenize(
 
 \item{docid_field}{String or symbol; column name where to get identifiers of texts.}
 
-\item{sys_dic}{Character scalar; path to the system dictionary for mecab.
-Note that the system dictionary is expected to be compiled with UTF-8,
-not Shift-JIS or other encodings.}
+\item{sys_dic}{Character scalar; path to the system dictionary for 'vibrato'.}
 
 \item{split}{Logical. If supplied `TRUE`, the function internally splits the sentence
 into sub-sentences using \code{stringi::stri_split_boudaries(type = "sentence")}.}
@@ -31,15 +29,4 @@ data.frame.
 }
 \description{
 Tokenize sentence for data.frame
-}
-\examples{
-\dontrun{
-df <- tokenize(
-  data.frame(
-    doc_id = seq_along(audubon::polano[5:8]),
-    text = audubon::polano[5:8]
-  )
-)
-head(df)
-}
 }

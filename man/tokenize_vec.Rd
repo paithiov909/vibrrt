@@ -6,7 +6,7 @@
 \usage{
 tokenize_vec(
   sentence,
-  sys_dic = system.file("ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
+  sys_dic = system.file("dict/ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
   user_dic = "",
   split = FALSE,
   mode = c("parse", "wakati")
@@ -15,11 +15,9 @@ tokenize_vec(
 \arguments{
 \item{sentence}{Character vector to be tokenized.}
 
-\item{sys_dic}{Character scalar; path to the system dictionary for mecab.
-Note that the system dictionary is expected to be compiled with UTF-8,
-not Shift-JIS or other encodings.}
+\item{sys_dic}{Character scalar; path to the system dictionary for 'vibrato'.}
 
-\item{user_dic}{Character scalar; path to the user dictionary for mecab.}
+\item{user_dic}{Character scalar; path to the user dictionary for 'vibrato'.}
 
 \item{split}{Logical. If supplied `TRUE`, the function internally splits the sentence
 into sub-sentences using \code{stringi::stri_split_boudaries(type = "sentence")}.}
@@ -31,10 +29,4 @@ data.frame or named list.
 }
 \description{
 Tokenize sentence for character vector
-}
-\examples{
-\dontrun{
-df <- tokenize_vec("\u3053\u3093\u306b\u3061\u306f")
-head(df)
-}
 }
