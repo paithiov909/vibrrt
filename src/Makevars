@@ -3,7 +3,7 @@ LIBDIR = $(TARGET_DIR)/release
 STATLIB = $(LIBDIR)/libvibrrt.a
 PKG_LIBS = -L$(LIBDIR) -lvibrrt
 
-all: C_clean
+all: C_clean rustup
 
 $(SHLIB): $(STATLIB)
 
@@ -19,3 +19,6 @@ C_clean:
 
 clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) rust/target
+
+rustup:
+	@rustup update || true

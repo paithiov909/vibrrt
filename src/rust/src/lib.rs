@@ -6,6 +6,7 @@ use vibrato::dictionary::Dictionary;
 use vibrato::Tokenizer;
 
 /// Call Vibrato tokenizer
+/// @noRd
 #[extendr]
 fn vbrt(sentence: Vec<String>, dict: String) -> Robj {
     let reader = BufReader::new(File::open(dict).unwrap());

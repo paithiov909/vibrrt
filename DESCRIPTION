@@ -1,7 +1,7 @@
 Type: Package
 Package: vibrrt
 Title: An R Wrapper of 'Vibrato'
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Authors@R: 
     person("Akiru", "Kato", , "paithiov909@gmail.com", role = c("aut", "cre"))
 Maintainer: Akiru Kato <paithiov909@gmail.com>
@@ -12,6 +12,7 @@ Depends:
 Imports: 
     audubon (>= 0.4.0),
     dplyr,
+    Matrix,
     purrr,
     rlang (>= 0.4.11),
     stringi
@@ -20,5 +21,5 @@ Suggests:
     roxygen2,
     testthat (>= 3.0.0)
 Encoding: UTF-8
-LazyData: true
 RoxygenNote: 7.2.3
+SystemRequirements: Cargo (rustc package manager)

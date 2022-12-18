@@ -12,6 +12,7 @@
 NULL
 
 #' Call Vibrato tokenizer
+#' @noRd
 vbrt <- function(sentence, dict) .Call(wrap__vbrt, sentence, dict)
 
 
