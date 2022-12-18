@@ -21,4 +21,6 @@ clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) rust/target
 
 rustup:
-	@rustup update || true
+	export PATH="$(PATH):$(HOME)/.rustup/bin" && \
+		export RUSTUP_HOME="$(HOME)/.rustup" && \
+		rustup update || true

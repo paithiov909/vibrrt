@@ -35,4 +35,4 @@ clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS) rust/target
 
 rustup:
-	@rustup toolchain install stable-gnu || true
+	@rustup update || true
