@@ -52,7 +52,7 @@ download_dict <- function(dict = c(
   }
 
   if (!file.exists(file.path(tempdir(), paste0(dict, ".tar.gz")))) {
-    download.file(
+    utils::download.file(
       url,
       destfile = file.path(tempdir(), paste0(dict, ".tar.gz"))
     )
@@ -63,7 +63,7 @@ download_dict <- function(dict = c(
     open = "r+b"
   )
   on.exit(close(gz))
-  untar(gz, exdir = file.path(dict_dir))
+  utils::untar(gz, exdir = file.path(dict_dir))
 
   return(invisible(dict_path(dict)))
 }
