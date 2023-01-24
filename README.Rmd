@@ -11,19 +11,32 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
+pkgload::load_all()
 ```
 
 # vibrrt
 
 <!-- badges: start -->
+[![vibrrt status badge](https://paithiov909.r-universe.dev/badges/vibrrt)](https://paithiov909.r-universe.dev)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
+## Installation
+
+```r
+install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+```
+
+## Usage
+
 ```{r}
-pkgload::load_all()
+ipadic <- vibrrt::dict_path("ipadic-mecab-2_7_0")
+if (!file.exists(ipadic)) {
+  vibrrt::download_dict("ipadic-mecab-2_7_0")
+}
 
 audubon::polano[5:8] |>
-  tokenize_vec() |>
-  prettify(col_select = c("POS1", "POS2")) |>
-  dplyr::slice_head(n = 10) |>
+  vibrrt::tokenize(sys_dic = ipadic) |>
+  vibrrt::prettify(col_select = c("POS1", "POS2")) |>
   dplyr::glimpse()
 ```

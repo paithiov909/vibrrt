@@ -2,31 +2,37 @@
 % Please edit documentation in R/tokenize.R
 \name{tokenize}
 \alias{tokenize}
-\title{Tokenize sentence for data.frame}
+\title{Tokenize sentences using 'Vibrato'}
 \usage{
 tokenize(
-  tbl,
+  x,
   text_field = "text",
   docid_field = "doc_id",
-  sys_dic = system.file("dict/ipadic-mecab-2_7_0/system.dic", package = "vibrrt"),
-  split = FALSE
+  sys_dic = "",
+  user_dic = "",
+  split = FALSE,
+  mode = c("parse", "wakati")
 )
 }
 \arguments{
-\item{tbl}{A data.frame.}
+\item{x}{A data.frame like object or a character vector to be tokenized.}
 
 \item{text_field}{String or symbol; column name where to get texts to be tokenized.}
 
 \item{docid_field}{String or symbol; column name where to get identifiers of texts.}
 
-\item{sys_dic}{Character scalar; path to the system dictionary for 'vibrato'.}
+\item{sys_dic}{Character scalar; path to the system dictionary for 'Vibrato'.}
 
-\item{split}{Logical. If supplied `TRUE`, the function internally splits the sentence
+\item{user_dic}{Character scalar; path to the user dictionary for 'Vibrato'.}
+
+\item{split}{Logical. If passed as `TRUE`, the function internally splits the sentence
 into sub-sentences using \code{stringi::stri_split_boudaries(type = "sentence")}.}
+
+\item{mode}{Character scalar to switch output format.}
 }
 \value{
-data.frame.
+A tibble or a named list of tokens.
 }
 \description{
-Tokenize sentence for data.frame
+Tokenize sentences using 'Vibrato'
 }

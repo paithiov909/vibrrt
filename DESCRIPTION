@@ -1,11 +1,12 @@
 Type: Package
 Package: vibrrt
 Title: An R Wrapper of 'Vibrato'
-Version: 0.0.0.9002
+Version: 0.0.1
 Authors@R: 
     person("Akiru", "Kato", , "paithiov909@gmail.com", role = c("aut", "cre"))
 Maintainer: Akiru Kato <paithiov909@gmail.com>
-Description: An R wrapper of 'Vibrato', Viterbi-based accelerated tokenizer.
+Description: An R wrapper of 'Vibrato', Viterbi-based accelerated
+    tokenizer.
 License: MIT + file LICENSE
 Depends: 
     R (>= 4.2)
@@ -14,13 +15,16 @@ Imports:
     dplyr,
     Matrix,
     purrr,
+    rappdirs,
     rlang (>= 0.4.11),
     stringi
 Suggests: 
-    rextendr,
+    Bioconductor/MatrixGenerics,
+    const-ae/sparseMatrixStats,
     roxygen2,
     testthat (>= 3.0.0)
+Config/rextendr/version: 0.2.0.9000
+Config/testthat/edition: 3
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 SystemRequirements: Cargo (rustc package manager)
-Config/rextendr/version: 0.2.0.9000
