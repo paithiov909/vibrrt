@@ -44,12 +44,6 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
-      - name: Add stable-gnu toolchain
-        if: ${{ matrix.config.os == 'windows-latest' }}
-        run: |
-          rustup toolchain add stable-gnu
-          rustup update
-
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
