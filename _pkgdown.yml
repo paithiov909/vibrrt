@@ -1,0 +1,7 @@
+url: https://paithiov909.github.io/vibrrt/
+template:
+  bootstrap: 5
+  opengraph:
+    twitter:
+      creator: "@paithiov909"
+      card: summary_large_image
