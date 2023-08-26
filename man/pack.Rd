@@ -13,7 +13,7 @@ pack(tbl, pull = "token", n = 1L, sep = "-", .collapse = " ")
 Column to be packed into text or ngrams body. Default value is `token`.}
 
 \item{n}{Integer internally passed to ngrams tokenizer function
-created of \code{audubon::ngram_tokenizer()}}
+created of \code{vibrrt::ngram_tokenizer()}}
 
 \item{sep}{Character scalar internally used as the concatenator of ngrams.}
 
@@ -45,17 +45,6 @@ of each text and several feature columns of each tokens.
 The feature columns must contain at least `token` itself.
 }
 
-\examples{
-\dontrun{
-df <- tokenize(
-  data.frame(
-    doc_id = seq_along(ginga[5:8]),
-    text = ginga[5:8]
-  )
-)
-pack(df)
-}
-}
 \seealso{
 \url{https://github.com/ropenscilabs/tif}
 }

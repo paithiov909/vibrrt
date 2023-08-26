@@ -12,7 +12,7 @@ as_tokens(
 )
 }
 \arguments{
-\item{tbl}{A tibble of tokens out of \code{tokenize()}.}
+\item{tbl}{A tibble of tokens out of \code{vibrrt::tokenize()}.}
 
 \item{token_field}{<[`data-masked`][rlang::args_data_masking]>
 Column name that contains tokens.}

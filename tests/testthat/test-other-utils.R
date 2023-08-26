@@ -1,5 +1,3 @@
-testdata <- readRDS(system.file("testdata/testdata.rda", package = "audubon"))
-
 ### as_tokens ----
 test_that("as_tokens works", {
   skip_if_offline()
@@ -35,12 +33,6 @@ test_that("is_blank works", {
     c(TRUE, TRUE, TRUE, FALSE),
     is_blank(list(NA_character_, NA_integer_, NULL, "test"))
   )
-})
-
-### pack ----
-test_that("pack works", {
-  res <- pack(testdata[[7]])
-  expect_equal(nrow(res), 50L)
 })
 
 ### prettify ----

@@ -1,6 +1,6 @@
 #' Create a list of tokens
 #'
-#' @param tbl A tibble of tokens out of \code{tokenize()}.
+#' @param tbl A tibble of tokens out of \code{vibrrt::tokenize()}.
 #' @param token_field <[`data-masked`][rlang::args_data_masking]>
 #' Column name that contains tokens.
 #' @param pos_field Feature name that will be kept as the names
