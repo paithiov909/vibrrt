@@ -14,6 +14,8 @@ $(STATLIB):
 	export PATH="$(PATH):$(CARGO_HOME)/bin:$(HOME)/.cargo/bin" && \
 		cargo build --lib --release --manifest-path ./rust/Cargo.toml --target-dir $(TARGET_DIR)
 
+	rm -Rf $(LIBDIR)/build
+
 C_clean:
 	rm -Rf $(SHLIB) $(STATLIB) $(OBJECTS)
 
