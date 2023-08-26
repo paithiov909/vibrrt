@@ -26,7 +26,7 @@ tokenize(
 \item{user_dic}{Character scalar; path to the user dictionary for 'Vibrato'.}
 
 \item{split}{Logical. If passed as `TRUE`, the function internally splits the sentence
-into sub-sentences using \code{stringi::stri_split_boudaries(type = "sentence")}.}
+into sub-sentences using \code{stringi::stri_split_boundaries(type = "sentence")}.}
 
 \item{mode}{Character scalar to switch output format.}
 }

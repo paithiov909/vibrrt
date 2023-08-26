@@ -16,6 +16,8 @@ pkgload::load_all()
 
 # vibrrt
 
+> An R wrapper of '[Vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer
+
 <!-- badges: start -->
 [![vibrrt status badge](https://paithiov909.r-universe.dev/badges/vibrrt)](https://paithiov909.r-universe.dev)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -25,19 +27,33 @@ pkgload::load_all()
 ## Installation
 
 ```r
-install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+# install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
 
-```{r}
+```r
 ipadic <- vibrrt::dict_path("ipadic-mecab-2_7_0")
 if (!file.exists(ipadic)) {
   vibrrt::download_dict("ipadic-mecab-2_7_0")
 }
 
-audubon::polano[5:8] |>
+gibasa::ginga[5:10] |>
   vibrrt::tokenize(sys_dic = ipadic) |>
-  vibrrt::prettify(col_select = c("POS1", "POS2")) |>
-  dplyr::glimpse()
+  vibrrt::prettify(col_select = c("POS1", "POS2"))
+```
+
+## Benchmark
+
+```{r}
+microbenchmark::microbenchmark(
+  gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
+  vibrrt = vibrrt::tokenize(
+    gibasa::ginga,
+    sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
+    mode = "wakati"
+  ),
+  times = 10L,
+  check = "equal"
+)
 ```

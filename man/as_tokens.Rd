@@ -14,10 +14,11 @@ as_tokens(
 \arguments{
 \item{tbl}{A tibble of tokens out of \code{tokenize()}.}
 
-\item{token_field}{Column name that contains tokens.}
+\item{token_field}{<[`data-masked`][rlang::args_data_masking]>
+Column name that contains tokens.}
 
 \item{pos_field}{Feature name that will be kept as the names
-of tokens. If you don't need them, giva `NULL` for this argument.}
+of tokens. If you don't need them, give a `NULL` for this argument.}
 
 \item{nm}{Names of returned list.
 If left with `NULL`, "doc_id" field of `tbl` is used instead.}

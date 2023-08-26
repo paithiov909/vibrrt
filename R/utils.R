@@ -1,9 +1,10 @@
 #' Create a list of tokens
 #'
 #' @param tbl A tibble of tokens out of \code{tokenize()}.
-#' @param token_field Column name that contains tokens.
+#' @param token_field <[`data-masked`][rlang::args_data_masking]>
+#' Column name that contains tokens.
 #' @param pos_field Feature name that will be kept as the names
-#' of tokens. If you don't need them, giva `NULL` for this argument.
+#' of tokens. If you don't need them, give a `NULL` for this argument.
 #' @param nm Names of returned list.
 #' If left with `NULL`, "doc_id" field of `tbl` is used instead.
 #' @return A named list of tokens.
@@ -12,8 +13,8 @@ as_tokens <- function(tbl,
                       token_field = "token",
                       pos_field = get_dict_features()[1],
                       nm = NULL) {
-  token_field <- enquo(token_field)
-  col_names <- rlang::as_name("doc_id")
+  token_field <- as_name(enquo(token_field))
+  col_names <- as_name("doc_id")
 
   if (is.null(nm)) {
     if (is.factor(tbl[[col_names]])) {
@@ -24,18 +25,12 @@ as_tokens <- function(tbl,
   }
 
   if (is.null(pos_field)) {
-    tbl |>
-      dplyr::group_by(.data[[col_names]]) |>
-      dplyr::group_map(function(df, grp) {
-        dplyr::pull(df, !!token_field)
-      }) |>
+    tbl[[token_field]] %>%
+      split(tbl[[col_names]]) %>%
       purrr::set_names(nm)
   } else {
-    tbl |>
-      dplyr::group_by(.data[[col_names]]) |>
-      dplyr::group_map(function(df, grp) {
-        dplyr::pull(df, !!token_field, pos_field)
-      }) |>
+    purrr::set_names(tbl[[token_field]], tbl[[pos_field]]) %>%
+      split(tbl[[col_names]]) %>%
       purrr::set_names(nm)
   }
 }

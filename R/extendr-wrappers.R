@@ -13,7 +13,7 @@ NULL
 
 #' Call Vibrato tokenizer
 #' @noRd
-vbrt <- function(sentence, dict) .Call(wrap__vbrt, sentence, dict)
+vbrt <- function(sentence, sys_dic, user_dic) .Call(wrap__vbrt, sentence, sys_dic, user_dic)
 
 
 # nolint end

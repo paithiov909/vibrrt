@@ -1,12 +1,13 @@
 [package]
-name = 'vibrrt'
-version = '0.1.0'
-edition = '2021'
+name = "vibrrt"
+version = "0.2.0"
+edition = "2021"
 
 [lib]
-crate-type = [ 'staticlib' ]
-name = 'vibrrt'
+crate-type = [ "staticlib" ]
+name = "vibrrt"
 
 [dependencies]
-extendr-api = '*'
-vibrato = '0.3.3'
+extendr-api = "*"
+vibrato = "0.5.1"
+zstd = "0.12.4"

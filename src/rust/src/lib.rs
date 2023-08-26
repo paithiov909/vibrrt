@@ -1,16 +1,21 @@
 use extendr_api::prelude::*;
 
 use std::fs::File;
-use std::io::BufReader;
 use vibrato::dictionary::Dictionary;
 use vibrato::Tokenizer;
 
 /// Call Vibrato tokenizer
 /// @noRd
 #[extendr]
-fn vbrt(sentence: Vec<String>, dict: String) -> Robj {
-    let reader = BufReader::new(File::open(dict).unwrap());
-    let dict = Dictionary::read(reader).unwrap();
+fn vbrt(sentence: Vec<String>, sys_dic: &str, user_dic: &str) -> Robj {
+    let reader = zstd::Decoder::new(File::open(sys_dic).unwrap()).unwrap();
+    let dict = if !user_dic.is_empty() {
+        let user_dic = File::open(user_dic).unwrap();
+        Dictionary::read(reader).unwrap()
+            .reset_user_lexicon_from_reader(Some(user_dic)).unwrap()
+    } else {
+        Dictionary::read(reader).unwrap()
+    };
     let tokenizer = Tokenizer::new(dict);
     let mut worker = tokenizer.new_worker();
 

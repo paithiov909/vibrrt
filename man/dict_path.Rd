@@ -6,7 +6,7 @@
 \usage{
 dict_path(
   dict = c("ipadic-mecab-2_7_0", "jumandic-mecab-7_0", "naist-jdic-mecab-0_6_3b",
-    "unidic-mecab-2_1_2", "unidic-cwj-3_1_1"),
+    "unidic-mecab-2_1_2", "unidic-cwj-3_1_1+compact-dual"),
   dict_dir = NULL
 )
 }

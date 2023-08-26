@@ -3,6 +3,9 @@
 
 # vibrrt
 
+> An R wrapper of ‘[Vibrato](https://github.com/daac-tools/vibrato)’:
+> Viterbi-based accelerated tokenizer
+
 <!-- badges: start -->
 
 [![vibrrt status
@@ -15,7 +18,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 ## Installation
 
 ``` r
-install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+# install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
@@ -26,18 +29,26 @@ if (!file.exists(ipadic)) {
   vibrrt::download_dict("ipadic-mecab-2_7_0")
 }
 
-audubon::polano[5:8] |>
+gibasa::ginga[5:10] |>
   vibrrt::tokenize(sys_dic = ipadic) |>
-  vibrrt::prettify(col_select = c("POS1", "POS2")) |>
-  dplyr::glimpse()
-#> Rows: 385
-#> Columns: 8
-#> $ doc_id      <fct> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2…
-#> $ sentence_id <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2…
-#> $ token_id    <dbl> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,…
-#> $ word_cost   <int> 3869, 6580, 5608, 3865, -2435, 13661, 8147, 4816, 4391, 83…
-#> $ total_cost  <int> 1962, 4173, 10735, 11161, 6535, 18820, 17350, 18240, 20326…
-#> $ token       <chr> "その", "ころ", "わたくし", "は", "、", "モリーオ", "市", …
-#> $ POS1        <chr> "連体詞", "名詞", "名詞", "助詞", "記号", "名詞", "名詞", …
-#> $ POS2        <chr> NA, "非自立", "代名詞", "係助詞", "読点", "固有名詞", "接…
+  vibrrt::prettify(col_select = c("POS1", "POS2"))
+```
+
+## Benchmark
+
+``` r
+microbenchmark::microbenchmark(
+  gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
+  vibrrt = vibrrt::tokenize(
+    gibasa::ginga,
+    sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
+    mode = "wakati"
+  ),
+  times = 10L,
+  check = "equal"
+)
+#> Unit: milliseconds
+#>    expr      min       lq     mean   median       uq      max neval
+#>  gibasa 102.5175 109.0075 121.7043 112.4550 118.7941 176.7678    10
+#>  vibrrt 392.7126 402.6038 433.9819 424.9284 464.0350 491.4648    10
 ```

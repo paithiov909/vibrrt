@@ -2,7 +2,7 @@
 % Please edit documentation in R/bind_tf_idf2.R
 \name{bind_tf_idf2}
 \alias{bind_tf_idf2}
-\title{Bind the term frequency and inverse document frequency}
+\title{Bind term frequency and inverse document frequency}
 \usage{
 bind_tf_idf2(
   tbl,
@@ -18,20 +18,23 @@ bind_tf_idf2(
 \arguments{
 \item{tbl}{A tidy text dataset.}
 
-\item{term}{Column containing terms as string or symbol.}
+\item{term}{<[`data-masked`][rlang::args_data_masking]>
+Column containing terms as string or symbol.}
 
-\item{document}{Column containing document IDs as string or symbol.}
+\item{document}{<[`data-masked`][rlang::args_data_masking]>
+Column containing document IDs as string or symbol.}
 
-\item{n}{Column containing document-term counts as string or symbol.}
+\item{n}{<[`data-masked`][rlang::args_data_masking]>
+Column containing document-term counts as string or symbol.}
 
 \item{tf}{Method for computing term frequency.}
 
 \item{idf}{Method for computing inverse document frequency.}
 
-\item{norm}{Logical; If passed as \code{TRUE}, the raw term counts are normalized
+\item{norm}{Logical; If passed as `TRUE`, the raw term counts are normalized
 being divided with L2 norms before computing IDF values.}
 
-\item{rmecab_compat}{Logical; If passed as \code{TRUE}, computes values while
+\item{rmecab_compat}{Logical; If passed as `TRUE`, computes values while
 taking care of compatibility with 'RMeCab'.
 Note that 'RMeCab' always computes IDF values using term frequency
 rather than raw term counts, and thus TF-IDF values may be
@@ -48,19 +51,15 @@ and 4 types of inverse document frequencies,
 which are implemented in 'RMeCab' package.
 }
 \details{
-Types of term frequency can be switched with \code{tf} argument:
-\itemize{
-\item \code{tf} is term frequency (not raw count of terms).
-\item \code{tf2} is logarithmic term frequency of which base is 10.
-\item \code{tf3} is binary-weighted term frequency.
-}
+Types of term frequency can be switched with `tf` argument:
+* `tf` is term frequency (not raw count of terms).
+* `tf2` is logarithmic term frequency of which base is `exp(1)`.
+* `tf3` is binary-weighted term frequency.
 
-Types of inverse document frequencies can be switched with \code{idf} argument:
-\itemize{
-\item \code{idf} is inverse document frequency of which base is 2, with smoothed.
+Types of inverse document frequencies can be switched with `idf` argument:
+* `idf` is inverse document frequency of which base is 2, with smoothed.
 'smoothed' here means just adding 1 to raw counts after logarithmizing.
-\item \code{idf2} is global frequency IDF.
-\item \code{idf3} is probabilistic IDF of which base is 2.
-\item \code{idf4} is global entropy, not IDF in actual.
-}
+* `idf2` is global frequency IDF.
+* `idf3` is probabilistic IDF of which base is 2.
+* `idf4` is global entropy, not IDF in actual.
 }

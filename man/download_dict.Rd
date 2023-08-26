@@ -2,11 +2,11 @@
 % Please edit documentation in R/dictionary.R
 \name{download_dict}
 \alias{download_dict}
-\title{Download and untar dictionary file}
+\title{Download dictionary file}
 \usage{
 download_dict(
   dict = c("ipadic-mecab-2_7_0", "jumandic-mecab-7_0", "naist-jdic-mecab-0_6_3b",
-    "unidic-mecab-2_1_2", "unidic-cwj-3_1_1"),
+    "unidic-mecab-2_1_2", "unidic-cwj-3_1_1+compact-dual"),
   dict_dir = NULL
 )
 }
@@ -20,8 +20,8 @@ By default, the return value \code{rappdirs::user_cache_dir("vibrrt")} is used.}
 The path to the 'system.dic' file is returned invisibly.
 }
 \description{
-Download and untar dictionary file
+Download dictionary file
 }
 \seealso{
-\\url{https://github.com/daac-tools/vibrato/releases/tag/v0.3.1}
+\url{https://github.com/daac-tools/vibrato/releases/tag/v0.5.0}
 }
