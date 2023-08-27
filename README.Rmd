@@ -27,7 +27,7 @@ pkgload::load_all()
 ## Installation
 
 ```r
-# install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
@@ -48,12 +48,28 @@ gibasa::ginga[5:10] |>
 ```{r}
 microbenchmark::microbenchmark(
   gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
-  vibrrt = vibrrt::tokenize(
+  vibrrt_ipadic = vibrrt::tokenize(
     gibasa::ginga,
     sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
     mode = "wakati"
   ),
   times = 10L,
   check = "equal"
+)
+```
+
+```{r}
+microbenchmark::microbenchmark(
+  gibasa = gibasa::tokenize(
+    gibasa::ginga,
+    sys_dic = "/usr/local/lib/python3.10/dist-packages/unidic_lite/dicdir",
+    mode = "wakati"
+  ),
+  vibrrt_unidic = vibrrt::tokenize(
+    gibasa::ginga,
+    sys_dic = vibrrt::dict_path("unidic-mecab-2_1_2"),
+    mode = "wakati"
+  ),
+  times = 5L
 )
 ```

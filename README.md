@@ -18,7 +18,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 ## Installation
 
 ``` r
-# install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
@@ -39,7 +39,7 @@ gibasa::ginga[5:10] |>
 ``` r
 microbenchmark::microbenchmark(
   gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
-  vibrrt = vibrrt::tokenize(
+  vibrrt_ipadic = vibrrt::tokenize(
     gibasa::ginga,
     sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
     mode = "wakati"
@@ -48,7 +48,27 @@ microbenchmark::microbenchmark(
   check = "equal"
 )
 #> Unit: milliseconds
-#>    expr      min       lq     mean   median       uq      max neval
-#>  gibasa 102.5175 109.0075 121.7043 112.4550 118.7941 176.7678    10
-#>  vibrrt 392.7126 402.6038 433.9819 424.9284 464.0350 491.4648    10
+#>           expr      min       lq     mean   median       uq      max neval
+#>         gibasa 104.3151 107.1517 113.6609 108.2799 116.5667 151.5655    10
+#>  vibrrt_ipadic 400.1805 406.0459 437.5194 423.5166 456.0265 521.1660    10
+```
+
+``` r
+microbenchmark::microbenchmark(
+  gibasa = gibasa::tokenize(
+    gibasa::ginga,
+    sys_dic = "/usr/local/lib/python3.10/dist-packages/unidic_lite/dicdir",
+    mode = "wakati"
+  ),
+  vibrrt_unidic = vibrrt::tokenize(
+    gibasa::ginga,
+    sys_dic = vibrrt::dict_path("unidic-mecab-2_1_2"),
+    mode = "wakati"
+  ),
+  times = 5L
+)
+#> Unit: milliseconds
+#>           expr       min       lq     mean   median        uq      max neval
+#>         gibasa  386.1541  390.373 1158.620  544.906  630.9402 3840.727     5
+#>  vibrrt_unidic 2334.7467 2352.088 2628.865 2404.555 2474.3871 3578.548     5
 ```
