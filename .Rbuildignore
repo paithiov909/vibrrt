@@ -5,3 +5,4 @@
 ^\.devcontainer$
 ^\.github$
 ^_pkgdown\.yml$
+^renovate\.json$
