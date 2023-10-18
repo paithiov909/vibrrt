@@ -10,4 +10,4 @@ name = "vibrrt"
 [dependencies]
 extendr-api = "*"
 vibrato = "0.5.1"
-zstd = "0.12.4"
+zstd = "0.13.0"
