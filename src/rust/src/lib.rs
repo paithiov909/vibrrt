@@ -1,14 +1,16 @@
-use extendr_api::prelude::*;
-
 use std::fs::File;
 use vibrato::dictionary::Dictionary;
 use vibrato::Tokenizer;
 
+use savvy::savvy;
+use savvy::{OwnedListSexp, OwnedIntegerSexp, OwnedStringSexp, StringSexp};
+use savvy::NotAvailableValue;
+
 /// Call Vibrato tokenizer
 /// @noRd
-#[extendr]
-fn vbrt(sentence: Vec<String>, sys_dic: &str, user_dic: &str) -> Robj {
-    let reader = zstd::Decoder::new(File::open(sys_dic).unwrap()).unwrap();
+#[savvy]
+fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<savvy::Sexp>  {
+    let reader = File::open(sys_dic).unwrap();
     let dict = if !user_dic.is_empty() {
         let user_dic = File::open(user_dic).unwrap();
         Dictionary::read(reader).unwrap()
@@ -19,41 +21,49 @@ fn vbrt(sentence: Vec<String>, sys_dic: &str, user_dic: &str) -> Robj {
     let tokenizer = Tokenizer::new(dict);
     let mut worker = tokenizer.new_worker();
 
-    let capacity = sentence.len();
-    let mut ids: Vec<u32> = Vec::with_capacity(capacity);
-    let mut tids: Vec<u32> = Vec::with_capacity(capacity);
-    let mut tokens: Vec<String> = Vec::with_capacity(capacity);
-    let mut features: Vec<String> = Vec::with_capacity(capacity);
-    let mut wcosts: Vec<i16> = Vec::with_capacity(capacity);
-    let mut tcosts: Vec<i32> = Vec::with_capacity(capacity);
+    let mut ids: Vec<i32> = Vec::new();
+    let mut tids: Vec<i32> = Vec::new();
+    let mut tokens: Vec<String> = Vec::new();
+    let mut features: Vec<String> = Vec::new();
+    let mut wcosts: Vec<i32> = Vec::new();
+    let mut tcosts: Vec<i32> = Vec::new();
 
     for (i, text) in sentence.iter().enumerate() {
+        if text.is_na() {
+            ids.push(i as _);
+            tids.push(0);
+            tokens.push(String::new());
+            features.push(String::new());
+            wcosts.push(0);
+            tcosts.push(0);
+            continue;
+        }
         worker.reset_sentence(text);
         worker.tokenize();
         for j in 0..worker.num_tokens() {
-             let t = worker.token(j);
-             ids.push(i as _);
-             tids.push(j as _);
-             wcosts.push(t.word_cost().clone());
-             tcosts.push(t.total_cost().clone());
-             tokens.push(t.surface().to_string());
-             features.push(t.feature().to_string());
+            let t = worker.token(j);
+            ids.push(i as _);
+            tids.push(j as _);
+            tokens.push(t.surface().to_string());
+            features.push(t.feature().to_string());
+            wcosts.push(t.word_cost() as _);
+            tcosts.push(t.total_cost());
         }
     }
-    return data_frame!(
-      sentence_id = r!(ids),
-      token_id = r!(tids),
-      word_cost = r!(wcosts),
-      total_cost = r!(tcosts),
-      token = r!(tokens),
-      feature = r!(features)
-    )
-}
+    let ids_out = OwnedIntegerSexp::try_from_slice(&ids)?;
+    let tids_out = OwnedIntegerSexp::try_from_slice(&tids)?;
+    let tokens_out = OwnedStringSexp::try_from_slice(&tokens)?;
+    let features_out = OwnedStringSexp::try_from_slice(&features)?;
+    let wcosts_out = OwnedIntegerSexp::try_from_slice(&wcosts)?;
+    let tcosts_out = OwnedIntegerSexp::try_from_slice(&tcosts)?;
 
-// Macro to generate exports.
-// This ensures exported functions are registered with R.
-// See corresponding C code in `entrypoint.c`.
-extendr_module! {
-    mod vibrrt;
-    fn vbrt;
+    let mut out = OwnedListSexp::new(6, true)?;
+    out.set_name_and_value(0, "sentence_id", ids_out)?;
+    out.set_name_and_value(1, "token_id", tids_out)?;
+    out.set_name_and_value(2, "token", tokens_out)?;
+    out.set_name_and_value(3, "feature", features_out)?;
+    out.set_name_and_value(4, "word_cost", wcosts_out)?;
+    out.set_name_and_value(5, "total_cost", tcosts_out)?;
+
+    Ok(out.into())
 }

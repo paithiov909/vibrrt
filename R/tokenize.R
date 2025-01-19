@@ -104,6 +104,12 @@ tokenize.character <- function(x,
 }
 
 #' @noRd
+vbrt_impl <- function(sentence, sys_dic, user_dic) {
+  vbrt(sentence, sys_dic = path.expand(sys_dic), user_dic = path.expand(user_dic)) %>%
+    dplyr::as_tibble()
+}
+
+#' @noRd
 tagger_impl <- function(sentence, sys_dic, user_dic, split) {
   if (isTRUE(split)) {
     res <-
@@ -122,7 +128,7 @@ tagger_impl <- function(sentence, sys_dic, user_dic, split) {
       purrr::list_rbind()
   } else {
     res <-
-      vbrt(sentence, sys_dic = path.expand(sys_dic), user_dic = path.expand(user_dic)) %>%
+      vbrt_impl(sentence, sys_dic = path.expand(sys_dic), user_dic = path.expand(user_dic)) %>%
       dplyr::mutate(
         sentence_id = .data$sentence_id + 1,
         token_id = .data$token_id + 1

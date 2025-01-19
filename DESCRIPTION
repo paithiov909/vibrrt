@@ -1,11 +1,11 @@
 Type: Package
 Package: vibrrt
-Title: An R Wrapper of 'Vibrato'
-Version: 0.0.2
+Title: An R Wrapper for 'Vibrato'
+Version: 0.1.0
 Authors@R:
     person("Akiru", "Kato", , "paithiov909@gmail.com", role = c("aut", "cre"))
 Maintainer: Akiru Kato <paithiov909@gmail.com>
-Description: An R wrapper of 'Vibrato', Viterbi-based accelerated
+Description: An R wrapper for 'Vibrato', Viterbi-based accelerated
     tokenizer.
 License: MIT + file LICENSE
 Depends:
@@ -14,7 +14,7 @@ Imports:
     dplyr,
     Matrix,
     purrr,
-    rappdirs,
+    hfhub,
     readr,
     rlang (>= 0.4.11),
     stringi,
@@ -23,8 +23,7 @@ Suggests:
     curl,
     roxygen2,
     testthat (>= 3.0.0)
-Config/rextendr/version: 0.3.1.9000
 Config/testthat/edition: 3
 Encoding: UTF-8
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 SystemRequirements: Cargo (rustc package manager)

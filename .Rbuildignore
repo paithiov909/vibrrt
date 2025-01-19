@@ -2,7 +2,9 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^README\.Rmd$
-^\.devcontainer$
 ^\.github$
 ^_pkgdown\.yml$
 ^renovate\.json$
+^.*\.dic$
+^src/rust/.cargo$
+^src/rust/target$
