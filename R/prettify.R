@@ -1,17 +1,17 @@
 #' Prettify tokenized output
 #'
 #' Turns a single character column into features
-#' separating with delimiter.
+#' while separating with delimiter.
 #'
 #' @param tbl A data.frame that has feature column to be prettified.
 #' @param col <[`data-masked`][rlang::args_data_masking]>
-#' Column name where to be prettified.
+#' Column containing features to be prettified.
 #' @param into Character vector that is used as column names of
 #' features.
 #' @param col_select Character or integer vector that will be kept
 #' in prettified features.
 #' @param delim Character scalar used to separate fields within a feature.
-#' @return A data.frame.
+#' @returns A data.frame.
 #' @export
 #' @examples
 #' prettify(
@@ -43,7 +43,6 @@ prettify <- function(tbl,
         stringi::stri_c(into, collapse = ","),
         dplyr::pull(tbl, {{ col }})
       ) %>%
-      stringi::stri_c(collapse = "\n") %>%
       I() %>%
       readr::read_delim(
         delim = delim,
@@ -57,19 +56,24 @@ prettify <- function(tbl,
   dplyr::bind_cols(dplyr::select(tbl, -!!col), features)
 }
 
-#' Get dictionary's features
+#' Get dictionary features
 #'
-#' Returns dictionary's features.
-#' Currently supports "unidic17" (2.1.2 src schema), "unidic26" (2.1.2 bin schema),
-#' "unidic29" (schema used in 2.2.0, 2.3.0), "cc-cedict", "ko-dic" (mecab-ko-dic),
-#' "naist11", "sudachi", and "ipa".
+#' Returns names of dictionary features.
+#' Currently supports
+#' "unidic17" (2.1.2 src schema),
+#' "unidic26" (2.1.2 bin schema),
+#' "unidic29" (schema used in 2.2.0, 2.3.0),
+#' "cc-cedict",
+#' "ko-dic" (mecab-ko-dic),
+#' "naist11", and "ipa".
 #'
 #' @seealso See also
-#' \href{https://github.com/ueda-keisuke/CC-CEDICT-MeCab}{'CC-CEDICT-MeCab'},
+#' \href{https://github.com/ueda-keisuke/CC-CEDICT-MeCab}{'CC-CEDICT-MeCab'}
 #' and \href{https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/}{'mecab-ko-dic'}.
-#' @param dict Character scalar; one of "ipa", "unidic17", "unidic26", "unidic29",
-#' "cc-cedict", "ko-dic", "naist11", or "sudachi".
-#' @return A character vector.
+#' @param dict Character scalar;
+#' one of "ipa", "unidic17", "unidic26", "unidic29",
+#' "cc-cedict", "ko-dic", "naist11".
+#' @returns A character vector.
 #' @export
 #' @examples
 #' get_dict_features("ipa")
@@ -80,8 +84,7 @@ get_dict_features <- function(dict = c(
                                 "unidic29",
                                 "cc-cedict",
                                 "ko-dic",
-                                "naist11",
-                                "sudachi"
+                                "naist11"
                               )) {
   dict <- rlang::arg_match(dict)
   feat <- dplyr::case_when(
@@ -113,10 +116,7 @@ get_dict_features <- function(dict = c(
     dict == "naist11" ~ list(c(
       "POS1", "POS2", "POS3", "POS4", "X5StageUse1", "X5StageUse2", "Original", "Yomi1", "Yomi2", "Info", "Misc"
     )),
-    dict == "sudachi" ~ list(c(
-      "POS1", "POS2", "POS3", "POS4", "cType", "cForm"
-    )),
     TRUE ~ list(c("POS1", "POS2", "POS3", "POS4", "X5StageUse1", "X5StageUse2", "Original", "Yomi1", "Yomi2"))
   )
-  unlist(feat)
+  unlist(feat, use.names = FALSE)
 }

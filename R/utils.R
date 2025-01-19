@@ -1,13 +1,14 @@
 #' Create a list of tokens
 #'
-#' @param tbl A tibble of tokens out of \code{vibrrt::tokenize()}.
+#' @param tbl A tibble of tokens out of `tokenize()`.
 #' @param token_field <[`data-masked`][rlang::args_data_masking]>
-#' Column name that contains tokens.
-#' @param pos_field Feature name that will be kept as the names
-#' of tokens. If you don't need them, give a `NULL` for this argument.
+#' Column containing tokens.
+#' @param pos_field Column containing features
+#' that will be kept as the names of tokens.
+#' If you don't need them, give a `NULL` for this argument.
 #' @param nm Names of returned list.
 #' If left with `NULL`, "doc_id" field of `tbl` is used instead.
-#' @return A named list of tokens.
+#' @returns A named list of tokens.
 #' @export
 as_tokens <- function(tbl,
                       token_field = "token",
@@ -27,11 +28,11 @@ as_tokens <- function(tbl,
   if (is.null(pos_field)) {
     tbl[[token_field]] %>%
       split(tbl[[col_names]]) %>%
-      purrr::set_names(nm)
+      rlang::set_names(nm)
   } else {
-    purrr::set_names(tbl[[token_field]], tbl[[pos_field]]) %>%
+    rlang::set_names(tbl[[token_field]], tbl[[pos_field]]) %>%
       split(tbl[[col_names]]) %>%
-      purrr::set_names(nm)
+      rlang::set_names(nm)
   }
 }
 
@@ -39,8 +40,8 @@ as_tokens <- function(tbl,
 #'
 #' @param x Object to check its emptiness.
 #' @param trim Logical.
-#' @param ... Additional arguments for \code{base::sapply()}.
-#' @return Logical.
+#' @param ... Additional arguments for `base::sapply()`.
+#' @returns Logicals.
 #' @export
 #' @examples
 #' is_blank(list(c(a = "", b = NA_character_), NULL))
@@ -63,10 +64,12 @@ is.blank <- function(x) {
   UseMethod("is.blank", x)
 }
 
+#' @export
 is.blank.default <- function(x) {
   is.na(x) | is.nan(x)
 }
 
+#' @export
 is.blank.character <- function(x) {
   is.na(x) | stringi::stri_isempty(x)
 }

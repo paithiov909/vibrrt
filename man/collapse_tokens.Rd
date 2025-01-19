@@ -9,7 +9,7 @@ collapse_tokens(tbl, condition, .collapse = "")
 \arguments{
 \item{tbl}{A tidy text dataset.}
 
-\item{condition}{<[`data-masked`][rlang::args_data_masking]>
+\item{condition}{<\code{\link[rlang:args_data_masking]{data-masked}}>
 A logical expression.}
 
 \item{.collapse}{String with which tokens are concatenated.}

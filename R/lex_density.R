@@ -12,7 +12,7 @@
 #' @param negate A logical vector of which length is 2.
 #' If passed as `TRUE`, then respectively negates the predicate functions
 #' for counting contents words or targets.
-#' @return A numeric vector.
+#' @returns A numeric vector.
 #' @export
 lex_density <- function(vec,
                         contents_words,
@@ -27,7 +27,7 @@ lex_density <- function(vec,
   } else {
     num_of_contents <- length(subset(vec, vec %in% contents_words))
   }
-  if (!missing(targets)) {
+  if (!is.null(targets)) {
     if (isTRUE(negate[2])) {
       vec <- subset(vec, !vec %in% targets)
     } else {

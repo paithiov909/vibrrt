@@ -9,17 +9,17 @@ mute_tokens(tbl, condition, .as = NA_character_)
 \arguments{
 \item{tbl}{A tidy text dataset.}
 
-\item{condition}{<[`data-masked`][rlang::args_data_masking]>
+\item{condition}{<\code{\link[rlang:args_data_masking]{data-masked}}>
 A logical expression.}
 
 \item{.as}{String with which tokens are replaced
 when they are matched to condition.
-The default value is `NA_character`.}
+The default value is \code{NA_character}.}
 }
 \value{
 A data.frame.
 }
 \description{
-Permutes tokens in the tidy text dataset with a string scalar
+Replaces tokens in the tidy text dataset with a string scalar
 only if they are matched to an expression.
 }

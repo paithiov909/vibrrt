@@ -12,16 +12,17 @@ as_tokens(
 )
 }
 \arguments{
-\item{tbl}{A tibble of tokens out of \code{vibrrt::tokenize()}.}
+\item{tbl}{A tibble of tokens out of \code{tokenize()}.}
 
-\item{token_field}{<[`data-masked`][rlang::args_data_masking]>
-Column name that contains tokens.}
+\item{token_field}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+Column containing tokens.}
 
-\item{pos_field}{Feature name that will be kept as the names
-of tokens. If you don't need them, give a `NULL` for this argument.}
+\item{pos_field}{Column containing features
+that will be kept as the names of tokens.
+If you don't need them, give a \code{NULL} for this argument.}
 
 \item{nm}{Names of returned list.
-If left with `NULL`, "doc_id" field of `tbl` is used instead.}
+If left with \code{NULL}, "doc_id" field of \code{tbl} is used instead.}
 }
 \value{
 A named list of tokens.

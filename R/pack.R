@@ -14,7 +14,8 @@
 #' The data.frame of tokens here is a data.frame object
 #' compatible with the TIF.
 #'
-#' A TIF valid data.frame of tokens are expected to have one unique key column (named `doc_id`)
+#' A TIF valid data.frame of tokens is expected to have
+#' one unique key column (named `doc_id`)
 #' of each text and several feature columns of each tokens.
 #' The feature columns must contain at least `token` itself.
 #'
@@ -24,10 +25,10 @@
 #' @param pull <[`data-masked`][rlang::args_data_masking]>
 #' Column to be packed into text or ngrams body. Default value is `token`.
 #' @param n Integer internally passed to ngrams tokenizer function
-#' created of \code{vibrrt::ngram_tokenizer()}
+#' created of `vibrrt::ngram_tokenizer()`.
 #' @param sep Character scalar internally used as the concatenator of ngrams.
-#' @param .collapse This argument is passed to \code{stringi::stri_c()}.
-#' @return A tibble.
+#' @param .collapse This argument is passed to `stringi::stri_c()`.
+#' @returns A tibble.
 #' @export
 pack <- function(tbl, pull = "token", n = 1L, sep = "-", .collapse = " ") {
   pull <- enquo(pull)
@@ -35,7 +36,7 @@ pack <- function(tbl, pull = "token", n = 1L, sep = "-", .collapse = " ") {
     tbl %>%
       dplyr::reframe(
         text = .data[[pull]] %>%
-          stringi::stri_omit_empty_na() %>%
+          stringi::stri_remove_empty_na() %>%
           stringi::stri_c(collapse = .collapse),
         .by = "doc_id"
       ) %>%
@@ -56,10 +57,10 @@ pack <- function(tbl, pull = "token", n = 1L, sep = "-", .collapse = " ") {
 
 #' Ngrams tokenizer
 #'
-#' Make an ngram tokenizer function.
+#' Makes an ngram tokenizer function.
 #'
 #' @param n Integer.
-#' @return ngram tokenizer function
+#' @returns ngram tokenizer function
 #' @export
 #' @examples
 #' bigram <- ngram_tokenizer(2)

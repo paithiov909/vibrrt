@@ -15,8 +15,8 @@ prettify(
 \arguments{
 \item{tbl}{A data.frame that has feature column to be prettified.}
 
-\item{col}{<[`data-masked`][rlang::args_data_masking]>
-Column name where to be prettified.}
+\item{col}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+Column containing features to be prettified.}
 
 \item{into}{Character vector that is used as column names of
 features.}
@@ -31,7 +31,7 @@ A data.frame.
 }
 \description{
 Turns a single character column into features
-separating with delimiter.
+while separating with delimiter.
 }
 \examples{
 prettify(

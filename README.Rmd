@@ -11,12 +11,12 @@ knitr::opts_chunk$set(
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
-pkgload::load_all()
+pkgload::load_all(export_all = FALSE)
 ```
 
 # vibrrt
 
-> An R wrapper of '[Vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer
+> An R wrapper for '[Vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer
 
 <!-- badges: start -->
 [![vibrrt status badge](https://paithiov909.r-universe.dev/badges/vibrrt)](https://paithiov909.r-universe.dev)
@@ -26,50 +26,28 @@ pkgload::load_all()
 
 ## Installation
 
+To install from source package, the Rust toolchain is required.
+
 ```r
 install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
 
-```r
-ipadic <- vibrrt::dict_path("ipadic-mecab-2_7_0")
-if (!file.exists(ipadic)) {
-  vibrrt::download_dict("ipadic-mecab-2_7_0")
-}
+You can download the model files from [ryan-minato/vibrato-models](https://huggingface.co/ryan-minato/vibrato-models)
+using [hfhub](https://github.com/mlverse/hfhub) package.
 
-gibasa::ginga[5:10] |>
-  vibrrt::tokenize(sys_dic = ipadic) |>
-  vibrrt::prettify(col_select = c("POS1", "POS2"))
-```
-
-## Benchmark
+Functions are designed in the same fashion as in the [gibasa](https://github.com/paithiov909/gibasa) package.
+Check the README of the gibasa package for more detailed usage.
 
 ```{r}
-microbenchmark::microbenchmark(
-  gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
-  vibrrt_ipadic = vibrrt::tokenize(
-    gibasa::ginga,
-    sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
-    mode = "wakati"
-  ),
-  times = 10L,
-  check = "equal"
+sample_text <- jsonlite::read_json(
+  "https://paithiov909.r-universe.dev/gibasa/data/ginga/json",
+  simplifyVector = TRUE
 )
-```
 
-```{r}
-microbenchmark::microbenchmark(
-  gibasa = gibasa::tokenize(
-    gibasa::ginga,
-    sys_dic = "/usr/local/lib/python3.10/dist-packages/unidic_lite/dicdir",
-    mode = "wakati"
-  ),
-  vibrrt_unidic = vibrrt::tokenize(
-    gibasa::ginga,
-    sys_dic = vibrrt::dict_path("unidic-mecab-2_1_2"),
-    mode = "wakati"
-  ),
-  times = 5L
-)
+withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
+  ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
+})
+vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
 ```

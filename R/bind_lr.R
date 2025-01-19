@@ -10,22 +10,13 @@
 #'
 #' @param tbl A tidy text dataset.
 #' @param term <[`data-masked`][rlang::args_data_masking]>
-#' Column containing terms as string or symbol.
+#' Column containing terms.
 #' @param lr_mode Method for computing 'FL' and 'FR' values.
-#' `n` is equivalent to 'LN' and 'RN', and `dn` is equivalent to 'LDN' and 'RDN'.
+#' `n` is equivalent to 'LN' and 'RN',
+#' and `dn` is equivalent to 'LDN' and 'RDN'.
 #' @param avg_rate Weight of the 'LR' value.
-#' @return A data.frame.
+#' @returns A data.frame.
 #' @export
-#' @examples
-#' \dontrun{
-#' df <- tokenize(
-#'   data.frame(
-#'     doc_id = seq_along(ginga[5:8]),
-#'     text = ginga[5:8]
-#'   )
-#' )
-#' bind_lr(df)
-#' }
 bind_lr <- function(tbl,
                     term = "token",
                     lr_mode = c("n", "dn"),

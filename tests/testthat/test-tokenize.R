@@ -1,13 +1,14 @@
 ### tokenize ----
+skip_on_cran()
+skip_if_offline()
+
+try({
+  withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
+    ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
+  })
+})
+
 test_that("tokenize for character vector works", {
-  skip_if_offline()
-
-  tmp <- tempdir()
-  ipadic <- dict_path("ipadic-mecab-2_7_0", dict_dir = tmp)
-  if (!file.exists(ipadic)) {
-    download_dict("ipadic-mecab-2_7_0", dict_dir = tmp)
-  }
-
   df <- tokenize(c(text1 = "\u3053\u3093\u306b\u3061\u306f"), sys_dic = ipadic)
   expect_s3_class(df$doc_id, "factor")
   expect_equal(df[[1]][1], factor("text1"))
@@ -18,14 +19,6 @@ test_that("tokenize for character vector works", {
 })
 
 test_that("tokenize for data.frame works", {
-  skip_if_offline()
-
-  tmp <- tempdir()
-  ipadic <- dict_path("ipadic-mecab-2_7_0", dict_dir = tmp)
-  if (!file.exists(ipadic)) {
-    download_dict("ipadic-mecab-2_7_0", dict_dir = tmp)
-  }
-
   df <- tokenize(
     data.frame(
       doc_id = c(1),

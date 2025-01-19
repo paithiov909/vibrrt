@@ -9,11 +9,11 @@ pack(tbl, pull = "token", n = 1L, sep = "-", .collapse = " ")
 \arguments{
 \item{tbl}{A data.frame of tokens.}
 
-\item{pull}{<[`data-masked`][rlang::args_data_masking]>
-Column to be packed into text or ngrams body. Default value is `token`.}
+\item{pull}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+Column to be packed into text or ngrams body. Default value is \code{token}.}
 
 \item{n}{Integer internally passed to ngrams tokenizer function
-created of \code{vibrrt::ngram_tokenizer()}}
+created of \code{vibrrt::ngram_tokenizer()}.}
 
 \item{sep}{Character scalar internally used as the concatenator of ngrams.}
 
@@ -40,9 +40,10 @@ for corpora, tokens, and document-term matrices.
 The data.frame of tokens here is a data.frame object
 compatible with the TIF.
 
-A TIF valid data.frame of tokens are expected to have one unique key column (named `doc_id`)
+A TIF valid data.frame of tokens is expected to have
+one unique key column (named \code{doc_id})
 of each text and several feature columns of each tokens.
-The feature columns must contain at least `token` itself.
+The feature columns must contain at least \code{token} itself.
 }
 
 \seealso{

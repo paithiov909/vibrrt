@@ -17,16 +17,18 @@ tokenize(
 \arguments{
 \item{x}{A data.frame like object or a character vector to be tokenized.}
 
-\item{text_field}{String or symbol; column name where to get texts to be tokenized.}
+\item{text_field}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+String or symbol; column containing texts to be tokenized.}
 
-\item{docid_field}{String or symbol; column name where to get identifiers of texts.}
+\item{docid_field}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+String or symbol; column containing document IDs.}
 
 \item{sys_dic}{Character scalar; path to the system dictionary for 'Vibrato'.}
 
 \item{user_dic}{Character scalar; path to the user dictionary for 'Vibrato'.}
 
-\item{split}{Logical. If passed as `TRUE`, the function internally splits the sentence
-into sub-sentences using \code{stringi::stri_split_boundaries(type = "sentence")}.}
+\item{split}{split Logical. When passed as \code{TRUE}, the function
+internally splits the sentences into sub-sentences}
 
 \item{mode}{Character scalar to switch output format.}
 }

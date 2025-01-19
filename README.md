@@ -3,7 +3,7 @@
 
 # vibrrt
 
-> An R wrapper of ‘[Vibrato](https://github.com/daac-tools/vibrato)’:
+> An R wrapper for ‘[Vibrato](https://github.com/daac-tools/vibrato)’:
 > Viterbi-based accelerated tokenizer
 
 <!-- badges: start -->
@@ -17,58 +17,45 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 
 ## Installation
 
+To install from source package, the Rust toolchain is required.
+
 ``` r
 install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
 ```
 
 ## Usage
 
-``` r
-ipadic <- vibrrt::dict_path("ipadic-mecab-2_7_0")
-if (!file.exists(ipadic)) {
-  vibrrt::download_dict("ipadic-mecab-2_7_0")
-}
+You can download the model files from
+[ryan-minato/vibrato-models](https://huggingface.co/ryan-minato/vibrato-models)
+using [hfhub](https://github.com/mlverse/hfhub) package.
 
-gibasa::ginga[5:10] |>
-  vibrrt::tokenize(sys_dic = ipadic) |>
-  vibrrt::prettify(col_select = c("POS1", "POS2"))
-```
-
-## Benchmark
+Functions are designed in the same fashion as in the
+[gibasa](https://github.com/paithiov909/gibasa) package. Check the
+README of the gibasa package for more detailed usage.
 
 ``` r
-microbenchmark::microbenchmark(
-  gibasa = gibasa::tokenize(gibasa::ginga, mode = "wakati"),
-  vibrrt_ipadic = vibrrt::tokenize(
-    gibasa::ginga,
-    sys_dic = vibrrt::dict_path("ipadic-mecab-2_7_0"),
-    mode = "wakati"
-  ),
-  times = 10L,
-  check = "equal"
+sample_text <- jsonlite::read_json(
+  "https://paithiov909.r-universe.dev/gibasa/data/ginga/json",
+  simplifyVector = TRUE
 )
-#> Unit: milliseconds
-#>           expr      min       lq     mean   median       uq      max neval
-#>         gibasa 104.3151 107.1517 113.6609 108.2799 116.5667 151.5655    10
-#>  vibrrt_ipadic 400.1805 406.0459 437.5194 423.5166 456.0265 521.1660    10
-```
 
-``` r
-microbenchmark::microbenchmark(
-  gibasa = gibasa::tokenize(
-    gibasa::ginga,
-    sys_dic = "/usr/local/lib/python3.10/dist-packages/unidic_lite/dicdir",
-    mode = "wakati"
-  ),
-  vibrrt_unidic = vibrrt::tokenize(
-    gibasa::ginga,
-    sys_dic = vibrrt::dict_path("unidic-mecab-2_1_2"),
-    mode = "wakati"
-  ),
-  times = 5L
-)
-#> Unit: milliseconds
-#>           expr       min       lq     mean   median        uq      max neval
-#>         gibasa  386.1541  390.373 1158.620  544.906  630.9402 3840.727     5
-#>  vibrrt_unidic 2334.7467 2352.088 2628.865 2404.555 2474.3871 3578.548     5
+withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
+  ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
+})
+#> ipadic-mecab-2_7_0/system.dic ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ |  48 MB/ 48 MB E…
+vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
+#> # A tibble: 187 × 7
+#>    doc_id sentence_id token_id token        feature         word_cost total_cost
+#>    <fct>        <dbl>    <dbl> <chr>        <chr>               <int>      <int>
+#>  1 1                1        1 　           記号,空白,*,*,*,*,…      1287        993
+#>  2 1                1        2 カムパネルラ 名詞,一般,*,*,*,*,…      9461      10379
+#>  3 1                1        3 が           助詞,格助詞,一般,*,*,…      3866       9524
+#>  4 1                1        4 手           名詞,一般,*,*,*,*,…      5631      14331
+#>  5 1                1        5 を           助詞,格助詞,一般,*,*,…      4183      13521
+#>  6 1                1        6 あげ         動詞,自立,*,*,一段,連…      9908      20097
+#>  7 1                1        7 まし         助動詞,*,*,*,特殊・マ…      6320      17966
+#>  8 1                1        8 た           助動詞,*,*,*,特殊・タ…      5500      17369
+#>  9 1                1        9 。           記号,句点,*,*,*,*,…       215      13935
+#> 10 1                1       10 それ         名詞,代名詞,一般,*,*,…      4818      18710
+#> # ℹ 177 more rows
 ```

@@ -9,11 +9,12 @@ bind_lr(tbl, term = "token", lr_mode = c("n", "dn"), avg_rate = 1)
 \arguments{
 \item{tbl}{A tidy text dataset.}
 
-\item{term}{<[`data-masked`][rlang::args_data_masking]>
-Column containing terms as string or symbol.}
+\item{term}{<\code{\link[rlang:args_data_masking]{data-masked}}>
+Column containing terms.}
 
 \item{lr_mode}{Method for computing 'FL' and 'FR' values.
-`n` is equivalent to 'LN' and 'RN', and `dn` is equivalent to 'LDN' and 'RDN'.}
+\code{n} is equivalent to 'LN' and 'RN',
+and \code{dn} is equivalent to 'LDN' and 'RDN'.}
 
 \item{avg_rate}{Weight of the 'LR' value.}
 }
@@ -26,17 +27,6 @@ Calculates and binds the importance of bigrams and their synergistic average.
 \details{
 The 'LR' value is the synergistic average of bigram importance
 that based on the words and their positions (left or right side).
-}
-\examples{
-\dontrun{
-df <- tokenize(
-  data.frame(
-    doc_id = seq_along(ginga[5:8]),
-    text = ginga[5:8]
-  )
-)
-bind_lr(df)
-}
 }
 \seealso{
 \doi{10.5715/jnlp.10.27}
