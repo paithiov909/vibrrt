@@ -20,7 +20,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 To install from source package, the Rust toolchain is required.
 
 ``` r
-install.packages("vibrrt", repos = "https://paithiov909.r-universe.dev")
+install.packages("vibrrt", repos = c("https://paithiov909.r-universe.dev", "https://cloud.r-project.org"))
 ```
 
 ## Usage
@@ -43,6 +43,7 @@ withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
   ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
 })
 #> ipadic-mecab-2_7_0/system.dic ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ |  48 MB/ 48 MB E…
+
 vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
 #> # A tibble: 187 × 7
 #>    doc_id sentence_id token_id token        feature         word_cost total_cost
