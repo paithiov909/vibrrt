@@ -151,5 +151,5 @@ tagger_impl <- function(sentence, docnames, sys_dic, user_dic, split) {
   }
   res %>%
     dplyr::mutate(doc_id = factor(.data$doc_id, unique(.data$doc_id))) %>%
-    dplyr::relocate(doc_id, dplyr::everything())
+    dplyr::relocate("doc_id", dplyr::everything())
 }
