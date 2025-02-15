@@ -6,7 +6,7 @@
 \alias{vibrrt-package}
 \title{vibrrt: An R Wrapper for 'vibrato'}
 \description{
-An R wrapper for 'vibrato' (\url{https://github.com/daac-tools/vibrato}), Viterbi-based accelerated tokenizer.
+An R wrapper for 'vibrato' (\url{https://github.com/daac-tools/vibrato}), a Rust reimplementation of 'MeCab' for fast tokenization.
 }
 \seealso{
 Useful links:
