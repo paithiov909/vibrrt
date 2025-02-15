@@ -3,7 +3,7 @@ TARGET = @TARGET@
 PROFILE = @PROFILE@
 
 # Add flags if necessary
-RUSTFLAGS =
+RUSTFLAGS = --cfg 'integer128'
 
 TARGET_DIR = $(CURDIR)/rust/target
 LIBDIR = $(TARGET_DIR)/$(TARGET)/$(subst dev,debug,$(PROFILE))
@@ -29,7 +29,7 @@ $(STATLIB):
 	  else \
 	    export CARGO_PROFILE_DEV_PANIC="abort" && \
 	    export CARGO_PROFILE_RELEASE_PANIC="abort" && \
-	    cargo +nightly -Zbuild-std build $(CARGO_BUILD_ARGS) --target $(TARGET); \
+	    cargo +nightly build $(CARGO_BUILD_ARGS) -Zbuild-std=panic_abort,std --target $(TARGET); \
 	  fi
 
 C_clean:
