@@ -18,6 +18,7 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
     } else {
         Dictionary::read(reader).unwrap()
     };
+    // TODO: max_grouping_len (https://docs.rs/vibrato/latest/vibrato/tokenizer/struct.Tokenizer.html)
     let tokenizer = Tokenizer::new(dict);
     let mut worker = tokenizer.new_worker();
 
@@ -27,6 +28,7 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
     let mut features: Vec<String> = Vec::new();
     let mut wcosts: Vec<i32> = Vec::new();
     let mut tcosts: Vec<i32> = Vec::new();
+    // TODO: keep right_id and left_id
 
     for (i, text) in sentence.iter().enumerate() {
         if text.is_na() {

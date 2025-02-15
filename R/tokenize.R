@@ -19,6 +19,7 @@ tokenize <- function(x,
                      user_dic = "",
                      split = FALSE,
                      mode = c("parse", "wakati")) {
+  # TODO: option to omit debug information
   UseMethod("tokenize", x)
 }
 
@@ -41,6 +42,8 @@ tokenize.default <- function(x,
   text_field <- enquo(text_field)
   docid_field <- enquo(docid_field)
 
+  x <- dplyr::as_tibble(x)
+
   tbl <- tagger_impl(
     dplyr::pull(x, {{ text_field }}),
     dplyr::pull(x, {{ docid_field }}),
@@ -57,7 +60,7 @@ tokenize.default <- function(x,
     col_u <- unique(x[[col_names]])
   }
 
-  tbl <- x |>
+  tbl <- x %>%
     dplyr::select(-!!text_field) %>%
     dplyr::mutate(dplyr::across(!!docid_field, ~ factor(., col_u))) %>%
     dplyr::rename(doc_id = {{ docid_field }}) %>%
@@ -84,7 +87,7 @@ tokenize.character <- function(x,
   if (!file.exists(sys_dic)) {
     rlang::abort(c(
       "`sys_dic` is not found.",
-      "i" = "Download the dictionary file using `download_dict()` at first."
+      "i" = "Download the dictionary file at first."
     ))
   }
   mode <- rlang::arg_match(mode, c("parse", "wakati"))

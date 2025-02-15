@@ -4,9 +4,9 @@
 \name{vibrrt-package}
 \alias{vibrrt}
 \alias{vibrrt-package}
-\title{vibrrt: An R Wrapper for 'Vibrato'}
+\title{vibrrt: An R Wrapper for 'vibrato'}
 \description{
-An R wrapper for 'Vibrato', Viterbi-based accelerated tokenizer.
+An R wrapper for 'vibrato' (\url{https://github.com/daac-tools/vibrato}), Viterbi-based accelerated tokenizer.
 }
 \seealso{
 Useful links:
