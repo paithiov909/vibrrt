@@ -1,6 +1,7 @@
 url: https://paithiov909.github.io/vibrrt/
 template:
   bootstrap: 5
+  light-switch: true
   opengraph:
     twitter:
       creator: "@paithiov909"

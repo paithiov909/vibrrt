@@ -3,7 +3,7 @@
 ^LICENSE\.md$
 ^README\.Rmd$
 ^\.github$
-^_pkgdown\.yml$
+^pkgdown$
 ^renovate\.json$
 ^.*\.dic$
 ^src/rust/.cargo$
