@@ -37,10 +37,10 @@ NULL
   stop(class, " cannot be modified", call. = FALSE)
 }
 
-#' Call Vibrato tokenizer
+#' Call vibrato tokenizer
 #' @noRd
-`vbrt` <- function(`sentence`, `sys_dic`, `user_dic`) {
-  .Call(savvy_vbrt__impl, `sentence`, `sys_dic`, `user_dic`)
+`vbrt` <- function(`sentence`, `sys_dic`, `user_dic`, `max_grouping_len`) {
+  .Call(savvy_vbrt__impl, `sentence`, `sys_dic`, `user_dic`, `max_grouping_len`)
 }
 
 

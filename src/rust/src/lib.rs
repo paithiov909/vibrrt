@@ -6,20 +6,20 @@ use savvy::savvy;
 use savvy::{OwnedListSexp, OwnedIntegerSexp, OwnedStringSexp, StringSexp};
 use savvy::NotAvailableValue;
 
-/// Call Vibrato tokenizer
+/// Call vibrato tokenizer
 /// @noRd
 #[savvy]
-fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<savvy::Sexp>  {
-    let reader = File::open(sys_dic).unwrap();
+fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str, max_grouping_len: i32) -> savvy::Result<savvy::Sexp>  {
+    let reader = File::open(sys_dic)?;
     let dict = if !user_dic.is_empty() {
-        let user_dic = File::open(user_dic).unwrap();
-        Dictionary::read(reader).unwrap()
-            .reset_user_lexicon_from_reader(Some(user_dic)).unwrap()
+        let user_dic = File::open(user_dic)?;
+        Dictionary::read(reader)?
+            .reset_user_lexicon_from_reader(Some(user_dic))?
     } else {
-        Dictionary::read(reader).unwrap()
+        Dictionary::read(reader)?
     };
-    // TODO: max_grouping_len (https://docs.rs/vibrato/latest/vibrato/tokenizer/struct.Tokenizer.html)
-    let tokenizer = Tokenizer::new(dict);
+    let tokenizer = Tokenizer::new(dict)
+        .max_grouping_len(max_grouping_len.try_into()?);
     let mut worker = tokenizer.new_worker();
 
     let mut ids: Vec<i32> = Vec::new();
@@ -28,7 +28,8 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
     let mut features: Vec<String> = Vec::new();
     let mut wcosts: Vec<i32> = Vec::new();
     let mut tcosts: Vec<i32> = Vec::new();
-    // TODO: keep right_id and left_id
+    let mut left_id: Vec<i32> = Vec::new();
+    let mut right_id: Vec<i32> = Vec::new();
 
     for (i, text) in sentence.iter().enumerate() {
         if text.is_na() {
@@ -38,6 +39,8 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
             features.push(String::new());
             wcosts.push(0);
             tcosts.push(0);
+            left_id.push(0);
+            right_id.push(0);
             continue;
         }
         worker.reset_sentence(text);
@@ -50,6 +53,8 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
             features.push(t.feature().to_string());
             wcosts.push(t.word_cost() as _);
             tcosts.push(t.total_cost());
+            left_id.push(t.left_id().try_into()?);
+            right_id.push(t.right_id().try_into()?);
         }
     }
     let ids_out = OwnedIntegerSexp::try_from_slice(&ids)?;
@@ -58,14 +63,18 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str) -> savvy::Result<sa
     let features_out = OwnedStringSexp::try_from_slice(&features)?;
     let wcosts_out = OwnedIntegerSexp::try_from_slice(&wcosts)?;
     let tcosts_out = OwnedIntegerSexp::try_from_slice(&tcosts)?;
+    let left_id_out = OwnedIntegerSexp::try_from_slice(&left_id)?;
+    let right_id_out = OwnedIntegerSexp::try_from_slice(&right_id)?;
 
-    let mut out = OwnedListSexp::new(6, true)?;
+    let mut out = OwnedListSexp::new(8, true)?;
     out.set_name_and_value(0, "sentence_id", ids_out)?;
     out.set_name_and_value(1, "token_id", tids_out)?;
     out.set_name_and_value(2, "token", tokens_out)?;
     out.set_name_and_value(3, "feature", features_out)?;
     out.set_name_and_value(4, "word_cost", wcosts_out)?;
     out.set_name_and_value(5, "total_cost", tcosts_out)?;
+    out.set_name_and_value(6, "left_id", left_id_out)?;
+    out.set_name_and_value(7, "right_id", right_id_out)?;
 
     Ok(out.into())
 }

@@ -1,15 +1,20 @@
-#' Tokenize sentences using 'Vibrato'
+#' Tokenize sentences using 'vibrato'
 #'
 #' @param x A data.frame like object or a character vector to be tokenized.
 #' @param text_field <[`data-masked`][rlang::args_data_masking]>
 #' String or symbol; column containing texts to be tokenized.
 #' @param docid_field <[`data-masked`][rlang::args_data_masking]>
 #' String or symbol; column containing document IDs.
-#' @param sys_dic Character scalar; path to the system dictionary for 'Vibrato'.
-#' @param user_dic Character scalar; path to the user dictionary for 'Vibrato'.
+#' @param sys_dic Character scalar; path to the system dictionary for 'vibrato'.
+#' @param user_dic Character scalar; path to the user dictionary for 'vibrato'.
 #' @param split split Logical. When passed as `TRUE`, the function
 #' internally splits the sentences into sub-sentences
 #' @param mode Character scalar to switch output format.
+#' @param max_grouping_len Integer scalar;
+#' The maximum grouping length for unknown words.
+#' The default value is `0L`, indicating the infinity length.
+#' @param verbose Logical.
+#' If `TRUE`, returns additional information for debugging.
 #' @returns A tibble or a named list of tokens.
 #' @export
 tokenize <- function(x,
@@ -18,8 +23,9 @@ tokenize <- function(x,
                      sys_dic = "",
                      user_dic = "",
                      split = FALSE,
-                     mode = c("parse", "wakati")) {
-  # TODO: option to omit debug information
+                     mode = c("parse", "wakati"),
+                     max_grouping_len = 0L,
+                     verbose = FALSE) {
   UseMethod("tokenize", x)
 }
 
@@ -30,7 +36,9 @@ tokenize.default <- function(x,
                              sys_dic = "",
                              user_dic = "",
                              split = FALSE,
-                             mode = c("parse", "wakati")) {
+                             mode = c("parse", "wakati"),
+                             max_grouping_len = 0L,
+                             verbose = FALSE) {
   if (!file.exists(sys_dic)) {
     rlang::abort(c(
       "`sys_dic` is not found.",
@@ -49,7 +57,9 @@ tokenize.default <- function(x,
     dplyr::pull(x, {{ docid_field }}),
     sys_dic,
     user_dic,
-    split
+    split,
+    max_grouping_len,
+    verbose
   )
 
   # if it's a factor, preserve ordering
@@ -75,7 +85,6 @@ tokenize.default <- function(x,
   as_tokens(tbl, pos_field = NULL)
 }
 
-
 #' @export
 tokenize.character <- function(x,
                                text_field = "text",
@@ -83,7 +92,9 @@ tokenize.character <- function(x,
                                sys_dic = "",
                                user_dic = "",
                                split = FALSE,
-                               mode = c("parse", "wakati")) {
+                               mode = c("parse", "wakati"),
+                               max_grouping_len = 0L,
+                               verbose = FALSE) {
   if (!file.exists(sys_dic)) {
     rlang::abort(c(
       "`sys_dic` is not found.",
@@ -96,7 +107,7 @@ tokenize.character <- function(x,
   if (is.null(nm)) {
     nm <- seq_along(x)
   }
-  tbl <- tagger_impl(x, nm, sys_dic, user_dic, split)
+  tbl <- tagger_impl(x, nm, sys_dic, user_dic, split, max_grouping_len, verbose)
 
   if (!identical(mode, "wakati")) {
     return(tbl)
@@ -105,29 +116,34 @@ tokenize.character <- function(x,
 }
 
 #' @noRd
-#' @param sentence A character vector to be tokenized.
-#' @param sys_dic Character scalar; path to the system dictionary for 'Vibrato'.
-#' @param user_dic Character scalar; path to the user dictionary for 'Vibrato'.
-#' @returns A tibble.
-vbrt_tagger <- function(sentence, sys_dic, user_dic) {
-  vbrt(sentence, sys_dic = path.expand(sys_dic), user_dic = path.expand(user_dic)) %>%
+vbrt_tagger <- function(sentence, sys_dic, user_dic, max_grouping_len) {
+  vbrt(
+    sentence,
+    sys_dic = path.expand(sys_dic),
+    user_dic = path.expand(user_dic),
+    max_grouping_len = as.integer(max_grouping_len)
+  ) %>%
     dplyr::as_tibble()
 }
 
 #' @noRd
 #' @param sentence A character vector to be tokenized.
 #' @param docnames A character vector that indicates document names.
-#' @param sys_dic Character scalar; path to the system dictionary for 'Vibrato'.
-#' @param user_dic Character scalar; path to the user dictionary for 'Vibrato'.
+#' @param sys_dic Character scalar; path to the system dictionary for 'vibrato'.
+#' @param user_dic Character scalar; path to the user dictionary for 'vibrato'.
 #' @param split Logical.
-tagger_impl <- function(sentence, docnames, sys_dic, user_dic, split) {
+#' @param max_grouping_len Integer scalar;
+#' @param verbose Logical.
+#' The maximum grouping length for unknown words.
+#' @returns A tibble.
+tagger_impl <- function(sentence, docnames, sys_dic, user_dic, split, max_grouping_len, verbose) {
   if (isTRUE(split)) {
     res <-
       stringi::stri_split_boundaries(sentence, type = "sentence") %>%
       rlang::as_function(~ {
         sizes <- lengths(.)
         dplyr::left_join(
-          vbrt_tagger(unlist(., use.names = FALSE), sys_dic, user_dic),
+          vbrt_tagger(unlist(., use.names = FALSE), sys_dic, user_dic, max_grouping_len),
           data.frame(
             doc_id = rep(docnames, sizes),
             sentence_id = seq_len(sum(sizes)) - 1
@@ -139,7 +155,7 @@ tagger_impl <- function(sentence, docnames, sys_dic, user_dic, split) {
       dplyr::mutate(sentence_id = dplyr::consecutive_id(.data$sentence_id), .by = "doc_id")
   } else {
     res <-
-      vbrt_tagger(sentence, sys_dic, user_dic) %>%
+      vbrt_tagger(sentence, sys_dic, user_dic, max_grouping_len) %>%
       dplyr::mutate(
         sentence_id = .data$sentence_id + 1,
         token_id = .data$token_id + 1
@@ -152,7 +168,9 @@ tagger_impl <- function(sentence, docnames, sys_dic, user_dic, split) {
         by = "sentence_id"
       )
   }
+
+  last_col <- if (verbose) 8 else 4
   res %>%
     dplyr::mutate(doc_id = factor(.data$doc_id, unique(.data$doc_id))) %>%
-    dplyr::relocate("doc_id", dplyr::everything())
+    dplyr::select("doc_id", 1:last_col)
 }

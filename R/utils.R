@@ -40,7 +40,7 @@ as_tokens <- function(tbl,
 #'
 #' @param x Object to check its emptiness.
 #' @param trim Logical.
-#' @param ... Additional arguments for `base::sapply()`.
+#' @param ... Additional arguments for [base::sapply()].
 #' @returns Logicals.
 #' @export
 #' @examples

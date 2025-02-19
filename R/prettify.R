@@ -13,13 +13,6 @@
 #' @param delim Character scalar used to separate fields within a feature.
 #' @returns A data.frame.
 #' @export
-#' @examples
-#' prettify(
-#'   data.frame(x = c("x,y", "y,z", "z,x")),
-#'   col = "x",
-#'   into = c("a", "b"),
-#'   col_select = "b"
-#' )
 prettify <- function(tbl,
                      col = "feature",
                      into = get_dict_features("ipa"),
@@ -72,7 +65,7 @@ prettify <- function(tbl,
 #' and \href{https://bitbucket.org/eunjeon/mecab-ko-dic/src/master/}{'mecab-ko-dic'}.
 #' @param dict Character scalar;
 #' one of "ipa", "unidic17", "unidic26", "unidic29",
-#' "cc-cedict", "ko-dic", "naist11".
+#' "cc-cedict", "ko-dic", or, "naist11".
 #' @returns A character vector.
 #' @export
 #' @examples

@@ -3,7 +3,7 @@
 
 # vibrrt
 
-> An R wrapper for ‘[Vibrato](https://github.com/daac-tools/vibrato)’:
+> An R wrapper for ‘[vibrato](https://github.com/daac-tools/vibrato)’:
 > Viterbi-based accelerated tokenizer
 
 <!-- badges: start -->
@@ -39,24 +39,23 @@ sample_text <- jsonlite::read_json(
   simplifyVector = TRUE
 )
 
-withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
-  ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
-})
-#> ipadic-mecab-2_7_0/system.dic ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ |  48 MB/ 48 MB E…
+# withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
+ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
+# })
 
 vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
-#> # A tibble: 187 × 7
-#>    doc_id sentence_id token_id token        feature         word_cost total_cost
-#>    <fct>        <dbl>    <dbl> <chr>        <chr>               <int>      <int>
-#>  1 1                1        1 　           記号,空白,*,*,*,*,…      1287        993
-#>  2 1                1        2 カムパネルラ 名詞,一般,*,*,*,*,…      9461      10379
-#>  3 1                1        3 が           助詞,格助詞,一般,*,*,…      3866       9524
-#>  4 1                1        4 手           名詞,一般,*,*,*,*,…      5631      14331
-#>  5 1                1        5 を           助詞,格助詞,一般,*,*,…      4183      13521
-#>  6 1                1        6 あげ         動詞,自立,*,*,一段,連…      9908      20097
-#>  7 1                1        7 まし         助動詞,*,*,*,特殊・マ…      6320      17966
-#>  8 1                1        8 た           助動詞,*,*,*,特殊・タ…      5500      17369
-#>  9 1                1        9 。           記号,句点,*,*,*,*,…       215      13935
-#> 10 1                1       10 それ         名詞,代名詞,一般,*,*,…      4818      18710
+#> # A tibble: 187 × 5
+#>    doc_id sentence_id token_id token        feature                             
+#>    <fct>        <dbl>    <dbl> <chr>        <chr>                               
+#>  1 1                1        1 　           記号,空白,*,*,*,*,　,　,　          
+#>  2 1                1        2 カムパネルラ 名詞,一般,*,*,*,*,*                 
+#>  3 1                1        3 が           助詞,格助詞,一般,*,*,*,が,ガ,ガ     
+#>  4 1                1        4 手           名詞,一般,*,*,*,*,手,テ,テ          
+#>  5 1                1        5 を           助詞,格助詞,一般,*,*,*,を,ヲ,ヲ     
+#>  6 1                1        6 あげ         動詞,自立,*,*,一段,連用形,あげる,アゲ,アゲ……
+#>  7 1                1        7 まし         助動詞,*,*,*,特殊・マス,連用形,ます,マシ,マシ……
+#>  8 1                1        8 た           助動詞,*,*,*,特殊・タ,基本形,た,タ,タ……
+#>  9 1                1        9 。           記号,句点,*,*,*,*,。,。,。          
+#> 10 1                1       10 それ         名詞,代名詞,一般,*,*,*,それ,ソレ,ソレ……
 #> # ℹ 177 more rows
 ```

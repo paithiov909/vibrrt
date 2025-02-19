@@ -11,7 +11,7 @@ get_dict_features(
 \arguments{
 \item{dict}{Character scalar;
 one of "ipa", "unidic17", "unidic26", "unidic29",
-"cc-cedict", "ko-dic", "naist11".}
+"cc-cedict", "ko-dic", or, "naist11".}
 }
 \value{
 A character vector.

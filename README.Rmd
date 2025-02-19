@@ -16,7 +16,7 @@ pkgload::load_all(export_all = FALSE)
 
 # vibrrt
 
-> An R wrapper for '[Vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer
+> An R wrapper for '[vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer
 
 <!-- badges: start -->
 [![vibrrt status badge](https://paithiov909.r-universe.dev/badges/vibrrt)](https://paithiov909.r-universe.dev)
@@ -46,9 +46,9 @@ sample_text <- jsonlite::read_json(
   simplifyVector = TRUE
 )
 
-withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
-  ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
-})
+# withr::with_envvar(c(HUGGINGFACE_HUB_CACHE = tempdir()), {
+ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
+# })
 
 vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
 ```

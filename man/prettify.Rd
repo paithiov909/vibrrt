@@ -33,11 +33,3 @@ A data.frame.
 Turns a single character column into features
 while separating with delimiter.
 }
-\examples{
-prettify(
-  data.frame(x = c("x,y", "y,z", "z,x")),
-  col = "x",
-  into = c("a", "b"),
-  col_select = "b"
-)
-}
