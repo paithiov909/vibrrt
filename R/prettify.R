@@ -39,7 +39,7 @@ prettify <- function(tbl,
       I() %>%
       readr::read_delim(
         delim = delim,
-        col_types = stringi::stri_c(rep("c", length(into)), collapse = ""),
+        col_types = stringi::stri_c(rep_len("c", length(into)), collapse = ""),
         col_select = col_select,
         na = c("*", "NA", ""),
         progress = FALSE,

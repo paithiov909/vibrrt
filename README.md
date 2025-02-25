@@ -29,10 +29,6 @@ You can download the model files from
 [ryan-minato/vibrato-models](https://huggingface.co/ryan-minato/vibrato-models)
 using [hfhub](https://github.com/mlverse/hfhub) package.
 
-Functions are designed in the same fashion as in the
-[gibasa](https://github.com/paithiov909/gibasa) package. Check the
-README of the gibasa package for more detailed usage.
-
 ``` r
 sample_text <- jsonlite::read_json(
   "https://paithiov909.r-universe.dev/gibasa/data/ginga/json",
@@ -43,7 +39,10 @@ sample_text <- jsonlite::read_json(
 ipadic <- hfhub::hub_download("ryan-minato/vibrato-models", "ipadic-mecab-2_7_0/system.dic")
 # })
 
-vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
+vibrrt::tokenize(
+  sample_text[5:8],
+  tagger = vibrrt::create_tagger(ipadic)
+)
 #> # A tibble: 187 × 5
 #>    doc_id sentence_id token_id token        feature                             
 #>    <fct>        <dbl>    <dbl> <chr>        <chr>                               
@@ -59,3 +58,10 @@ vibrrt::tokenize(sample_text[5:8], sys_dic = ipadic)
 #> 10 1                1       10 それ         名詞,代名詞,一般,*,*,*,それ,ソレ,ソレ……
 #> # ℹ 177 more rows
 ```
+
+## Versioning
+
+This package is versioned by copying the version number of
+[vibrato](https://github.com/daac-tools/vibrato), where the first three
+digits represent that version number and the fourth digit (if any)
+represents the patch release for this package.
