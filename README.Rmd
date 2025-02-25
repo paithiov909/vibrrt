@@ -22,7 +22,7 @@ pkgload::load_all(export_all = FALSE)
 [![R-CMD-check](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-An R wrapper for '[vibrato](https://github.com/daac-tools/vibrato)': Viterbi-based accelerated tokenizer.
+An R wrapper for [vibrato](https://github.com/daac-tools/vibrato): Viterbi-based accelerated tokenizer.
 
 ## Installation
 

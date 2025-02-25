@@ -12,7 +12,7 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 [![R-CMD-check](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-An R wrapper for ‘[vibrato](https://github.com/daac-tools/vibrato)’:
+An R wrapper for [vibrato](https://github.com/daac-tools/vibrato):
 Viterbi-based accelerated tokenizer.
 
 ## Installation
