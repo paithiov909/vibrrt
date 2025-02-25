@@ -1,18 +1,13 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://paithiov909.github.io/vibrrt/404.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/LICENSE-text.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/LICENSE.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/authors.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/index.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/as_tokens.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/reference/bind_lr.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/reference/bind_tf_idf2.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/reference/collapse_tokens.html</loc></url>
+<url><loc>https://paithiov909.github.io/vibrrt/reference/create_tagger.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/get_dict_features.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/index.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/is_blank.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/reference/lex_density.html</loc></url>
-<url><loc>https://paithiov909.github.io/vibrrt/reference/mute_tokens.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/ngram_tokenizer.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/pack.html</loc></url>
 <url><loc>https://paithiov909.github.io/vibrrt/reference/prettify.html</loc></url>
