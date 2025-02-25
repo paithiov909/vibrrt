@@ -3,9 +3,6 @@
 
 # vibrrt
 
-> An R wrapper for ‘[vibrato](https://github.com/daac-tools/vibrato)’:
-> Viterbi-based accelerated tokenizer
-
 <!-- badges: start -->
 
 [![vibrrt status
@@ -14,6 +11,9 @@ badge](https://paithiov909.r-universe.dev/badges/vibrrt)](https://paithiov909.r-
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![R-CMD-check](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/paithiov909/vibrrt/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
+
+An R wrapper for ‘[vibrato](https://github.com/daac-tools/vibrato)’:
+Viterbi-based accelerated tokenizer.
 
 ## Installation
 

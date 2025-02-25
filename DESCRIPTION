@@ -6,7 +6,7 @@ Authors@R:
     person("Akiru", "Kato", , "paithiov909@gmail.com", role = c("aut", "cre"))
 Maintainer: Akiru Kato <paithiov909@gmail.com>
 Description: An R wrapper for 'vibrato'
-    (<https://github.com/daac-tools/vibrato>), a Rust reimplementation of
+    <https://github.com/daac-tools/vibrato>, a Rust reimplementation of
     'MeCab' for fast tokenization.
 License: Apache License (>= 2)
 URL: https://paithiov909.github.io/vibrrt/
