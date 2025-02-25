@@ -33,7 +33,7 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str, max_grouping_len: i
 
     for (i, text) in sentence.iter().enumerate() {
         if text.is_na() {
-            ids.push(i as _);
+            ids.push((i + 1) as _);
             tids.push(0);
             tokens.push(String::new());
             features.push(String::new());
@@ -47,8 +47,8 @@ fn vbrt(sentence: StringSexp, sys_dic: &str, user_dic: &str, max_grouping_len: i
         worker.tokenize();
         for j in 0..worker.num_tokens() {
             let t = worker.token(j);
-            ids.push(i as _);
-            tids.push(j as _);
+            ids.push((i + 1) as _);
+            tids.push((j + 1) as _);
             tokens.push(t.surface().to_string());
             features.push(t.feature().to_string());
             wcosts.push(t.word_cost() as _);

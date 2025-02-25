@@ -1,13 +1,26 @@
 #' @noRd
 tagger_inner <- function(sentence, sys_dic, user_dic, max_grouping_len, verbose) {
   ret <- vbrt(sentence, sys_dic, user_dic, max_grouping_len) %>%
-    dplyr::as_tibble()
+    dplyr::as_tibble() %>%
+    dplyr::mutate(
+      sentence_id = as.integer(.data$sentence_id),
+      token_id = as.integer(.data$token_id)
+    )
 
   to_omit <- if (verbose) 0 else 4
   dplyr::select(ret, 1:dplyr::last_col(to_omit))
 }
 
 #' Wrapper that takes a tagger function
+#'
+#' @details
+#' `tagger` is expected to be a function that takes single argument
+#' (character vector to be tokenized) and returns a data.frame
+#' containing the following columns:
+#'
+#' * `sentence_id`
+#' * `token`
+#' * `feature`
 #'
 #' @param sentence A character vector to be tokenized.
 #' @param docnames A character vector that indicates document names.
@@ -24,13 +37,12 @@ tagger_impl <- function(sentence, docnames, split, tagger) {
         dplyr::left_join(
           tagger(unlist(., use.names = FALSE)),
           data.frame(
-            doc_id = rep(docnames, sizes),
-            sentence_id = seq_len(sum(sizes)) - 1
+            doc_id = rep_len(docnames, sizes),
+            sentence_id = seq_len(sum(sizes))
           ),
           by = "sentence_id"
         )
       })() %>%
-      dplyr::mutate(token_id = .data$token_id + 1) %>%
       dplyr::mutate(
         sentence_id = dplyr::consecutive_id(.data$sentence_id),
         .by = "doc_id"
@@ -38,10 +50,6 @@ tagger_impl <- function(sentence, docnames, split, tagger) {
   } else {
     res <-
       tagger(sentence) %>%
-      dplyr::mutate(
-        sentence_id = .data$sentence_id + 1,
-        token_id = .data$token_id + 1
-      ) %>%
       dplyr::left_join(
         data.frame(
           sentence_id = seq_along(sentence),

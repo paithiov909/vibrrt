@@ -45,7 +45,7 @@ vibrrt::tokenize(
 )
 #> # A tibble: 187 × 5
 #>    doc_id sentence_id token_id token        feature                             
-#>    <fct>        <dbl>    <dbl> <chr>        <chr>                               
+#>    <fct>        <int>    <int> <chr>        <chr>                               
 #>  1 1                1        1 　           記号,空白,*,*,*,*,　,　,　          
 #>  2 1                1        2 カムパネルラ 名詞,一般,*,*,*,*,*                 
 #>  3 1                1        3 が           助詞,格助詞,一般,*,*,*,が,ガ,ガ     
