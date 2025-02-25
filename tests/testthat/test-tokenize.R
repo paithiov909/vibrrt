@@ -1,4 +1,5 @@
 ### tokenize ----
+## TODO: test for user directory
 skip_on_cran()
 skip_if_offline()
 
