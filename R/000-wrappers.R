@@ -39,8 +39,8 @@ NULL
 
 #' Call vibrato tokenizer
 #' @noRd
-`vbrt` <- function(`sentence`, `sys_dic`, `user_dic`, `max_grouping_len`) {
-  .Call(savvy_vbrt__impl, `sentence`, `sys_dic`, `user_dic`, `max_grouping_len`)
+`vbrt` <- function(`x`, `sys_dic`, `user_dic`, `max_grouping_len`) {
+  .Call(savvy_vbrt__impl, `x`, `sys_dic`, `user_dic`, `max_grouping_len`)
 }
 
 

@@ -34,8 +34,8 @@ SEXP handle_result(SEXP res_) {
     return (SEXP)res;
 }
 
-SEXP savvy_vbrt__impl(SEXP c_arg__sentence, SEXP c_arg__sys_dic, SEXP c_arg__user_dic, SEXP c_arg__max_grouping_len) {
-    SEXP res = savvy_vbrt__ffi(c_arg__sentence, c_arg__sys_dic, c_arg__user_dic, c_arg__max_grouping_len);
+SEXP savvy_vbrt__impl(SEXP c_arg__x, SEXP c_arg__sys_dic, SEXP c_arg__user_dic, SEXP c_arg__max_grouping_len) {
+    SEXP res = savvy_vbrt__ffi(c_arg__x, c_arg__sys_dic, c_arg__user_dic, c_arg__max_grouping_len);
     return handle_result(res);
 }
 

@@ -1,14 +1,13 @@
 #' @noRd
-tagger_inner <- function(sentence, sys_dic, user_dic, max_grouping_len, verbose) {
-  ret <- vbrt(sentence, sys_dic, user_dic, max_grouping_len) %>%
+tagger_inner <- function(x, sys_dic, user_dic, max_grouping_len, verbose) {
+  res <- vbrt(x, sys_dic, user_dic, max_grouping_len) %>%
     dplyr::as_tibble() %>%
     dplyr::mutate(
       sentence_id = as.integer(.data$sentence_id),
       token_id = as.integer(.data$token_id)
     )
-
   to_omit <- if (verbose) 0 else 4
-  dplyr::select(ret, 1:dplyr::last_col(to_omit))
+  dplyr::select(res, 1:dplyr::last_col(to_omit))
 }
 
 #' Wrapper that takes a tagger function
@@ -22,16 +21,16 @@ tagger_inner <- function(sentence, sys_dic, user_dic, max_grouping_len, verbose)
 #' * `token`
 #' * `feature`
 #'
-#' @param sentence A character vector to be tokenized.
+#' @param sentences A character vector to be tokenized.
 #' @param docnames A character vector that indicates document names.
 #' @param split Logical.
 #' @param tagger A tagger function created by [create_tagger()].
 #' @returns A tibble.
 #' @noRd
-tagger_impl <- function(sentence, docnames, split, tagger) {
+tagger_impl <- function(sentences, docnames, split, tagger) {
   if (isTRUE(split)) {
     res <-
-      stringi::stri_split_boundaries(sentence, type = "sentence") %>%
+      stringi::stri_split_boundaries(sentences, type = "sentence") %>%
       rlang::as_function(~ {
         sizes <- lengths(.)
         dplyr::left_join(
@@ -49,10 +48,10 @@ tagger_impl <- function(sentence, docnames, split, tagger) {
       )
   } else {
     res <-
-      tagger(sentence) %>%
+      tagger(sentences) %>%
       dplyr::left_join(
         data.frame(
-          sentence_id = seq_along(sentence),
+          sentence_id = seq_along(sentences),
           doc_id = docnames
         ),
         by = "sentence_id"
