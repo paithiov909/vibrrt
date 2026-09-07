@@ -1,7 +1,7 @@
 Type: Package
 Package: vibrrt
 Title: An R Wrapper for 'vibrato'
-Version: 0.5.2.2
+Version: 0.5.2.3
 Authors@R:
     person("Akiru", "Kato", , "paithiov909@gmail.com", role = c("aut", "cre"))
 Maintainer: Akiru Kato <paithiov909@gmail.com>
@@ -26,7 +26,7 @@ Suggests:
     roxygen2,
     testthat (>= 3.0.0),
     withr
-Config/roxygen2/version: 8.0.0
+Config/roxygen2/version: 8.1.0
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
